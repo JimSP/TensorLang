@@ -1,0 +1,12 @@
+/Users/alexandre/TensorLang/src/main/java/lang/Env.java
+/Users/alexandre/TensorLang/src/main/java/lang/Main.java
+/Users/alexandre/TensorLang/src/main/java/lang/Tensor.java
+/Users/alexandre/TensorLang/src/main/java/lang/TensorFunction.java
+/Users/alexandre/TensorLang/src/main/java/lang/TensorLangInterpreter.java
+/Users/alexandre/TensorLang/src/main/java/lang/UserFunction.java
+/Users/alexandre/TensorLang/target/generated-sources/antlr4/lang/parser/TensorLangBaseListener.java
+/Users/alexandre/TensorLang/target/generated-sources/antlr4/lang/parser/TensorLangBaseVisitor.java
+/Users/alexandre/TensorLang/target/generated-sources/antlr4/lang/parser/TensorLangLexer.java
+/Users/alexandre/TensorLang/target/generated-sources/antlr4/lang/parser/TensorLangListener.java
+/Users/alexandre/TensorLang/target/generated-sources/antlr4/lang/parser/TensorLangParser.java
+/Users/alexandre/TensorLang/target/generated-sources/antlr4/lang/parser/TensorLangVisitor.java

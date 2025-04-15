@@ -1,0 +1,28 @@
+x = 3 + 4
+print x
+
+a = 3
+b = [1, 2, 3]
+c = a + b
+print c
+
+s = "ABC" 
+result = s + 2
+print result
+
+boolTrue = true
+boolFalse = false
+print boolTrue && boolFalse
+
+v1 = [true, false, true]
+v2 = [true, true, false]
+print v1 && v2
+print v1 || v2
+
+double = fn(x) => x + x
+print double(5)
+print double("hi")
+print double([1,2,3])
+
+d = (3 + 2) && true
+print d

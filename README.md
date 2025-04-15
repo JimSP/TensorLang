@@ -124,6 +124,6 @@ Estamos em uma fase de estruturação do runtime e DSL. Sugestões e melhorias s
 
 ## 📜 Licença
 
-MIT – uso livre com atribuição. Ideal para aplicações educacionais, científicas e comerciais com propósito ético e sustentável.
+APACHE 2.
 
 

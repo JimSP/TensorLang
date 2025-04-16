@@ -1,8 +1,9 @@
-
 # TensorLang
 
 **TensorLang** é uma linguagem funcional, vetorial e determinística baseada em tensores imutáveis.  
-Projetada para **análise computacional eficiente**, **transformações vetoriais puras**, e como base para frameworks de **machine learning funcional e sustentável**, sua semântica se baseia em **tensores como valor universal** e propagação semântica rigorosa via o valor terminal `[]`.
+Projetada para análise computacional eficiente, transformações vetoriais puras e como base para frameworks de machine learning auditável e explicável.
+
+Sua semântica se baseia em **tensores como valor universal** e **propagação semântica rigorosa** via o valor terminal `[]`.
 
 ---
 
@@ -10,42 +11,56 @@ Projetada para **análise computacional eficiente**, **transformações vetoriai
 
 TensorLang:
 
-- Representa **todos os dados como tensores numéricos imutáveis**
-- Possui **funções puras** como primeira classe
-- Executa **operações com broadcasting bidirecional**
-- Substitui exceções por um **valor terminal universal** (`[]`)
-- É **determinística, auditável e energeticamente eficiente**
-- Integra-se com **Java via proxies**, permitindo side-effects externos
+- Representa todos os dados como tensores numéricos imutáveis
+- Possui funções puras como primeira classe
+- Executa operações com broadcasting bidirecional
+- Substitui exceções por um valor terminal universal (`[]`)
+- É determinística, auditável e energeticamente eficiente
+- Integra-se com Java via proxies, permitindo side-effects externos
 
 ---
 
-## 📦 Estrutura Atual do Projeto
+## ✅ Exemplo de Execução Real
 
+Script: [`program.tlang`](./program.tlang)
+
+```tlang
+x = 3 + 4
+print x                    // [7.0]
+
+a = 3
+b = [1, 2, 3]
+print a + b                // [4.0, 5.0, 6.0]
+
+s = "ABC"
+print s + 2                // [67.0, 68.0, 69.0]  // ASCII somado a escalar
+
+boolTrue = true
+boolFalse = false
+print boolTrue && boolFalse  // [0.0]
+
+v1 = [true, false, true]
+v2 = [true, true, false]
+print v1 && v2             // [1.0, 0.0, 0.0]
+print v1 || v2             // [1.0, 1.0, 1.0]
+
+double = fn(x) => x + x
+print double(5)            // [10.0]
+print double("hi")         // [208.0, 210.0]
+print double([1,2,3])      // [2.0, 4.0, 6.0]
+
+d = (3 + 2) && true
+print d                    // [1.0]
 ```
-tensorlang/
-├── program.tlang                  # exemplo de script TensorLang
-├── pom.xml                        # build Maven
-├── src/main/antlr4/TensorLang.g4 # gramática ANTLR4 da linguagem
-└── src/main/java/lang/            # interpretador base em Java
-    ├── Tensor.java                # estrutura de dados tensorial
-    ├── TensorFunction.java        # funções internas e built-ins
-    ├── UserFunction.java          # definição de funções do usuário
-    ├── Env.java                   # ambiente de execução
-    ├── TensorLangInterpreter.java# interpretador da linguagem
-    └── Main.java                  # ponto de entrada
+
+### Execução:
+
+```bash
+java --enable-preview \\
+  --add-modules jdk.incubator.vector \\
+  -cp target/classes:target/generated-sources/antlr4:$(cat cp.txt) \\
+  lang.Main program.tlang
 ```
-
----
-
-## ✅ Funcionalidades Implementadas
-
-- [x] Tipos unificados: tudo é tensor (`[1]`, `[1, 2]`, `"ABC"`, `true`)
-- [x] Coerções explícitas: `boolean()`, `string()`, `void()`, etc.
-- [x] Valor terminal `[]`: representa erro sem lançar exceções
-- [x] Operadores aritméticos e lógicos com broadcasting
-- [x] Funções do usuário (`fn(x) => x + x`)
-- [x] Execução via JVM (Java 17+)
-- [x] Interoperabilidade com Java via proxies para side-effects
 
 ---
 
@@ -54,19 +69,19 @@ tensorlang/
 ### Tudo é Tensor
 
 ```tlang
-a = 3       // [3]
+a = 3       // [3.0]
 b = [1, 2, 3]
-c = a + b   // [4, 5, 6]
+c = a + b   // [4.0, 5.0, 6.0]
 ```
 
-### Valor Terminal
+### Valor Terminal `[]`
 
 ```tlang
-x = [0.0] / [0.0]   // []  ← divisão indefinida
+x = [0.0] / [0.0]  // []
 print(x)           // []
 ```
 
-### Propagação determinística
+### Propagação Determinística
 
 ```tlang
 f = fn(x) => x + 1
@@ -75,55 +90,63 @@ print(f([]))       // []
 
 ---
 
-## 🔭 Roadmap de Evolução
+## 📁 Estrutura do Projeto
+
+```
+tensorlang/
+├── program.tlang                  # Exemplo de script TensorLang
+├── pom.xml                        # Build Maven
+├── src/main/antlr4/TensorLang.g4  # Gramática ANTLR4
+└── src/main/java/lang/            # Interpretador base em Java
+    ├── Tensor.java
+    ├── TensorFunction.java
+    ├── UserFunction.java
+    ├── Env.java
+    ├── TensorLangInterpreter.java
+    └── Main.java
+```
+## 🚀 Roadmap de Evolução
 
 ### 1. Operações Numéricas Avançadas
-- [ ] `exp`, `log`, `pow`, `softmax`, `sigmoid`, `relu`
-- [ ] `sum`, `mean`, `argmax`, `argmin`
+- `exp`, `log`, `pow`, `softmax`, `sigmoid`, `relu`
+- `sum`, `mean`, `argmax`, `argmin`
 
 ### 2. Autodiferenciação
-- [ ] Rastrear operações para gerar gráfico computacional
-- [ ] Implementar `gradient(fn)` com regra da cadeia
+- `gradient(fn)` com rastreio semântico
 
-### 3. Definição de Modelos
-- [ ] `param("w")` → define tensor registrável
-- [ ] `Model = fn(x) => x * w + b`
+### 3. Definição de Modelos e Treinamento
+- `param("w")`, `train(...)`, controle funcional puro
 
-### 4. Otimizadores
-- [ ] `sgd(w, grad, lr)` como operador nativo
-- [ ] Suporte a atualização de parâmetros com controle funcional
-
-### 5. Suporte a Dataset + Treinamento
-- [ ] Iterator funcional para batches
-- [ ] Função `train(model, data, labels, loss, optimizer)`
-
-### 6. Compilação e Exportação
-- [ ] Geração de código LLVM, WASM ou Java bytecode
-- [ ] Exportação de modelos para execução embarcada
+### 4. Compilação e Exportação
+- LLVM, WASM, Java bytecode
 
 ---
 
-## 🌱 Diferença Estratégica em Relação a TensorFlow
+## 🧬 Diferenciais Estratégicos
 
-| Critério               | TensorFlow                | TensorLang Framework                   |
-|------------------------|---------------------------|----------------------------------------|
-| Tipos                  | Diversos (`Tensor`, etc.) | Um único tipo: `Tensor`                |
-| Controle de fluxo      | Imperativo híbrido        | Nenhum (`[]` como semântica terminal)  |
-| Vetorização            | Parcial via API           | Nativa e total                         |
-| Exceções               | Sim (NaN, erro, etc.)     | Não (erro → `[]`)                      |
-| Produtividade          | Média                     | Alta (declarações puras e seguras)     |
-| Energia e eficiência   | Alta com tuning           | Muito alta nativamente                 |
-
----
-
-## 🤝 Contribuindo
-
-Estamos em uma fase de estruturação do runtime e DSL. Sugestões e melhorias são bem-vindas!
+| Critério               | TensorLang                          | Frameworks ML Tradicionais       |
+|------------------------|-------------------------------------|----------------------------------|
+| **Tipagem**            | Tensor puro                         | Tipos diversos, híbridos         |
+| **Execução**           | Funcional, vetorial, auditável      | Imperativa ou híbrida            |
+| **Controle de Fluxo**  | Composicional (`if_vec`)            | `if`, `while`, macros            |
+| **Valor Terminal**     | `[]`, propagação semântica          | Exceções ou NaN                  |
+| **Explicabilidade**    | Nativa (`trace`, `doc`, `memory`)   | Pós-processada (SHAP, LIME)      |
+| **Federabilidade**     | Suportada via `call()`              | Inexistente                      |
 
 ---
 
-## 📜 Licença
+## 📫 Contribuição
 
-APACHE 2.
+1. **Fork** deste repositório.
+2. Crie uma branch:  
+   `git checkout -b minha-funcionalidade`
+3. Faça commit das suas alterações:  
+   `git commit -m 'Nova feature'`
+4. Envie um push:  
+   `git push origin minha-funcionalidade`
+5. Envie um **pull request**!
 
+---
 
+**Pronto para compor vetores com clareza, lógica e sem surpresas.**  
+Explore, experimente e contribua!
